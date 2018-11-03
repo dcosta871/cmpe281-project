@@ -108,17 +108,20 @@
           overflow-y: auto;
           max-height: 400px;
         }
+        div#loginModal.in {
+          background-image: url("buildings.jpg");
+        }
     </style>
   </head>
   <body>
     <div id="mapDiv">
-    <div id="map"></div>
-    <button type="button" style="margin-top: 10px" class="btn btn-primary" data-toggle="modal" data-target="#createBuildingModal">Add Building</button>
-    <button type="button" style="margin-top: 10px; float: right; visibility: hidden;" id="generateReportButton" class="btn btn-info" onclick="generateReport()">Generate Report</button>
+      <div id="map"></div>
+      <button type="button" style="margin-top: 10px" class="btn btn-primary" data-toggle="modal" data-target="#createBuildingModal">Add Building</button>
+      <button type="button" style="margin-top: 10px; float: right; visibility: hidden;" id="generateReportButton" class="btn btn-info" onclick="generateReport()">Generate Report</button>
     </div>
     <div id="floorPlanDiv">
         <h2 class="header" id="floorPlanTitle"></h2>
-         <div id="floorPlanContainer">
+        <div id="floorPlanContainer">
           <table id="floorPlanTable" class="table" style="border-collapse: true"></table>
           </div>
         <span id="floorSelectionMessage">Select a Floor</span> <input id="selectedFloor"/> <button class="btn btn-primary" onclick="setFloor()">View Floor</button>
@@ -339,11 +342,29 @@
               <pre id="reportDiv" style='overflow: auto'>
               </pre>  
             </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="modal fade" id="loginModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="loginTitle">IOT Infrastructure Manager</h4>
+            </div>
+            <div class="modal-body">
+              User Name: <input class="form-control" type="text" id="userName"><br>
+              Password: <input class="form-control" type="password" id="password"><br>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
   </body>
 </html>

@@ -16,8 +16,8 @@ if (!String.prototype.endsWith) {
 		return this.substring(this_len - search.length, this_len) === search;
 	};
 }
-
 function initMap() {
+    $('#loginModal').modal('toggle');
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 37.334665328, lng: -121.875329832},
         zoom: 14
@@ -621,4 +621,10 @@ function generateReport() {
         $("#generateReportTitle").text(currentBuildingName + " report")
         $("#reportDiv").text(JSON.stringify(currentBuilding, null, 2));
     }
+}
+
+function login() {
+    var userName = $("#userName").val();
+    var password = $("#password").val();
+    $('#loginModal').modal('toggle');
 }

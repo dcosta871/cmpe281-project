@@ -141,7 +141,7 @@ function processNewBuilding() {
         console.log(newBuilding);
         $.ajax({
             type: "POST",
-            url: "/buildings",
+            url: "http://34.217.21.159/buildings",
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newBuilding),
             contentType: "application/json; charset=utf-8",
@@ -313,7 +313,7 @@ function deleteCluster(event) {
     var clusterNumber = event.currentTarget.parentElement.parentElement.rowIndex  - 1;
     $.ajax({
         type: "DELETE",
-        url: "/buildings/" + currentBuildingName + "/floors/" + clusterNumber,
+        url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + clusterNumber,
         // The key needs to match your method's input parameter (case-sensitive).
         success: function(data){
             updateBuildings([setFloorTable]);
@@ -341,7 +341,7 @@ function updateExistingCluster() {
         }
         $.ajax({
             type: "PUT",
-            url: "/buildings/" + currentBuildingName + "/floors/" + floor,
+            url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + floor,
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(updatedCluster),
             contentType: "application/json; charset=utf-8",
@@ -381,7 +381,7 @@ function processNewCluster() {
         }
         $.ajax({
             type: "POST",
-            url: "/buildings/" + currentBuildingName + "/floors",
+            url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors",
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newCluster),
             contentType: "application/json; charset=utf-8",
@@ -422,7 +422,7 @@ function processNewNode() {
         }
         $.ajax({
             type: "POST",
-            url: "/buildings/" + currentBuildingName + "/floors/" + clusterFloorNumber + "/rooms",
+            url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + clusterFloorNumber + "/rooms",
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newNode),
             contentType: "application/json; charset=utf-8",
@@ -464,7 +464,7 @@ function updateExistingNode() {
         }
         $.ajax({
             type: "PUT",
-            url: "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom,
+            url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom,
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(updatedNode),
             contentType: "application/json; charset=utf-8",
@@ -499,7 +499,7 @@ function deleteNode(event) {
     var nodeNumber = event.currentTarget.parentElement.parentElement.rowIndex  - 1;
     $.ajax({
         type: "DELETE",
-        url: "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + nodeNumber,
+        url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + nodeNumber,
         // The key needs to match your method's input parameter (case-sensitive).
         success: function(data){
             updateBuildings([setRoomTable, createFloorPlanTable]);
@@ -534,7 +534,7 @@ function processNewSensor() {
         }
         $.ajax({
             type: "POST",
-            url: "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors",
+            url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors",
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newSensor),
             contentType: "application/json; charset=utf-8",
@@ -578,7 +578,7 @@ function updateExistingSensor() {
         }
         $.ajax({
             type: "Put",
-            url: "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + currentSensor,
+            url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + currentSensor,
             // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(updateSensor),
             contentType: "application/json; charset=utf-8",
@@ -601,7 +601,7 @@ function deleteSensor() {
     var sensorNumber = event.currentTarget.parentElement.parentElement.rowIndex  - 1;
     $.ajax({
         type: "DELETE",
-        url: "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentFloor + "/sensors/" + sensorNumber,
+        url: "http://34.217.21.159/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentFloor + "/sensors/" + sensorNumber,
         // The key needs to match your method's input parameter (case-sensitive).
         success: function(data){
             updateBuildings([setSensorTable]);

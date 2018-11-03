@@ -26,7 +26,7 @@ function initMap() {
 }
 
 function updateBuildings(callback){
-    $.get('http://localhost:3000/buildings', function(res, err){
+    $.get('http://34.217.21.159:3000/buildings', function(res, err){
         addBuildings(res);
         if (currentBuildingName) {
             for (var i = 0; i < buildings.length; i++) {

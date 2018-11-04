@@ -17,7 +17,7 @@ exports.create_a_building = function(req, res) {
   Building.find({}, function(err, buildings) {
     var buildingExists = false;
     for (var i = 0; i < buildings.length; i++) {
-      if ((buildings[i]['name'] === new_building_data['name']) || (buildings[i]['latitude'] === new_building_data['latitude'] && buildings[i]['longitude'] === new_building_data['longitude']))  {
+      if ((buildings[i]['name'].toLowerCase() === new_building_data['name'].toLowerCase()) || (buildings[i]['latitude'] === new_building_data['latitude'] && buildings[i]['longitude'] === new_building_data['longitude']))  {
         buildingExists = true;
         break;
       }

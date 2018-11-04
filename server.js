@@ -7,7 +7,7 @@ var express = require('express'),
   
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://ec2-54-214-68-93.us-west-2.compute.amazonaws.com/Buildingdb'); 
+mongoose.connect('mongodb://ec2-18-236-67-52.us-west-2.compute.amazonaws.com/Buildingdb'); 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

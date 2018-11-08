@@ -142,7 +142,6 @@ function processNewBuilding() {
         $.ajax({
             type: "POST",
             url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings",
-            // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newBuilding),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -314,7 +313,6 @@ function deleteCluster(event) {
     $.ajax({
         type: "DELETE",
         url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + clusterNumber,
-        // The key needs to match your method's input parameter (case-sensitive).
         success: function(data){
             updateBuildings([setFloorTable]);
         },
@@ -342,7 +340,6 @@ function updateExistingCluster() {
         $.ajax({
             type: "PUT",
             url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + floor,
-            // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(updatedCluster),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -382,7 +379,6 @@ function processNewCluster() {
         $.ajax({
             type: "POST",
             url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors",
-            // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newCluster),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -412,7 +408,7 @@ function processNewNode() {
     }
     else if (isNaN(nodeFloorNumber) || !nodeFloorNumber.match(/^-{0,1}\d+$/) || parseInt(nodeFloorNumber) < 1 ||
      parseInt(nodeFloorNumber) > currentBuilding['floors'][clusterFloorNumber]['rooms'].length) {
-        alert("Node Not Added: Node Floor must be number in between 1 and " + currentBuilding['floors'].length);
+        alert("Node Not Added: Node Floor must be number in between 1 and " + currentBuilding['floors'][clusterFloorNumber]['rooms'].length);
     }
     else {
         var newNode = {
@@ -423,7 +419,6 @@ function processNewNode() {
         $.ajax({
             type: "POST",
             url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + clusterFloorNumber + "/rooms",
-            // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newNode),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -465,7 +460,6 @@ function updateExistingNode() {
         $.ajax({
             type: "PUT",
             url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom,
-            // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(updatedNode),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -500,7 +494,6 @@ function deleteNode(event) {
     $.ajax({
         type: "DELETE",
         url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + nodeNumber,
-        // The key needs to match your method's input parameter (case-sensitive).
         success: function(data){
             updateBuildings([setRoomTable, createFloorPlanTable]);
         },
@@ -535,7 +528,6 @@ function processNewSensor() {
         $.ajax({
             type: "POST",
             url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors",
-            // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(newSensor),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -579,7 +571,6 @@ function updateExistingSensor() {
         $.ajax({
             type: "Put",
             url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + currentSensor,
-            // The key needs to match your method's input parameter (case-sensitive).
             data: JSON.stringify(updateSensor),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -601,8 +592,7 @@ function deleteSensor() {
     var sensorNumber = event.currentTarget.parentElement.parentElement.rowIndex  - 1;
     $.ajax({
         type: "DELETE",
-        url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentFloor + "/sensors/" + sensorNumber,
-        // The key needs to match your method's input parameter (case-sensitive).
+        url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + sensorNumber,
         success: function(data){
             updateBuildings([setSensorTable]);
         },
@@ -625,6 +615,28 @@ function generateReport() {
 
 function login() {
     var userName = $("#userName").val();
-    var password = $("#password").val();
-    $('#loginModal').modal('toggle');
+    var userPassword = $("#password").val();
+    if (!userName || !userPassword) {
+        alert("User name and password must be specified");
+        return;
+    }
+    var authInfo = {
+        user: userName,
+        password: userPassword
+    }
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(authInfo),
+        contentType: "application/json; charset=utf-8",
+        url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/login",
+        success: function(data){
+            $('#loginModal').modal('toggle');
+        },
+        failure: function(errMsg) {
+            alert("Incorrect User or Password");
+        },
+        error: function(errMsg) {
+            alert("Incorrect User or Password");
+        }
+    });
 }

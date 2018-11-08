@@ -506,3 +506,27 @@ exports.update_sensor = function(req, res) {
     }
   });
 }
+
+exports.authenticate = function(req, res) {
+  var authentication_request = req.body;
+  var MongoClient = require('mongodb').MongoClient;
+  var url = "mongodb+srv://admin:admin@cluster0-ileym.mongodb.net";
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      res.status(500).send("ConnectionError");
+      throw err;
+    }
+    var dbo = db.db("users");
+    dbo.collection("users").findOne({"user": authentication_request.user}, function(err, result) {
+      if (err) throw err;
+      if (!result || result["password"] !== authentication_request.password) {
+        res.status(401).send("NotAuthorized");
+      }
+      else {
+        res.status(200).send("Authenticated");
+      }
+      db.close();
+    });
+  });
+}

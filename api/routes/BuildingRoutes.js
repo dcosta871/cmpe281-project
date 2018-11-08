@@ -2,7 +2,9 @@
 module.exports = function(app) {
   var buildingsList = require('../controllers/BuildingController');
 
-  // todoList Routes
+  app.route('/login')
+    .post(buildingsList.authenticate);
+    
   app.route('/buildings')
     .get(buildingsList.get_all_buildings)
     .post(buildingsList.create_a_building)
@@ -37,4 +39,6 @@ module.exports = function(app) {
     .get(buildingsList.get_sensor)
     .delete(buildingsList.delete_sensor)
     .put(buildingsList.update_sensor);
+  
+
 };

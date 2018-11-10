@@ -25,7 +25,7 @@
             background: #F2F2F2;
         }
         #mapDiv {
-          height: 45%;
+          height: 43%;
           width: 50%;
           display: inline-block;
           padding: 20px;
@@ -117,10 +117,11 @@
     <div id="mapDiv">
       <div id="map"></div>
       <button type="button" style="margin-top: 10px" class="btn btn-primary" data-toggle="modal" data-target="#createBuildingModal">Add Building</button>
+      <button type="button" style="margin-top: 10px" class="btn btn-warning" onclick="location.reload();">Log Out</button>
       <button type="button" style="margin-top: 10px; float: right; visibility: hidden;" id="generateReportButton" class="btn btn-info" onclick="generateReport()">Generate Report</button>
     </div>
     <div id="floorPlanDiv">
-        <h2 class="header" id="floorPlanTitle"></h2>
+        <h3 class="header" id="floorPlanTitle"></h3>
         <div id="floorPlanContainer">
           <table id="floorPlanTable" class="table" style="border-collapse: true"></table>
           </div>
@@ -142,7 +143,7 @@
       </div>
     </div>
     <!--AIzaSyAmeYtFhICdEj9HJU4E9jCSFMcLNMJkMy4-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmeYtFhICdEj9HJU4E9jCSFMcLNMJkMy4&callback=initMap" async defer></script>
     <script src="script.js"></script>
 
     <div class="modal fade" id="createBuildingModal" role="dialog">

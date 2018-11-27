@@ -510,7 +510,7 @@ exports.update_sensor = function(req, res) {
 exports.authenticate = function(req, res) {
   var authentication_request = req.body;
   var MongoClient = require('mongodb').MongoClient;
-  var url = "mongodb+srv://admin:admin@cluster0-ft3gt.mongodb.net";
+  var url = "mongodb+srv://admin:admin@cluster0-rsavg.mongodb.net";
 
   MongoClient.connect(url, function(err, db) {
     if (err) {

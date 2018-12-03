@@ -7,6 +7,7 @@ var BuildingSchema = new Schema({
   name: String,
   longitude: String,
   latitude: String,
+  address: String,
   floors: [{
     clusterName: String,
     status: String,

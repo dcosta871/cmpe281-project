@@ -123,40 +123,51 @@ function processNewBuilding() {
             alert("Building Not Added: JSON Floor Configuration must be valid (i.e. [3, 4, 1])");
             return;
         }
-        var newBuilding = {
-            "name": buildingName,
-            "latitude": latitude,
-            "longitude": longitude,
-            "floors": []
-        }
-        var floorPlan = JSON.parse(floorNumberJSON);
-        for (var i = 0; i < floorPlan.length; i++) {
-            newBuilding.floors.push({
-                rooms: []
+        var geocoder = new google.maps.Geocoder();
+        address = "";
+        var latlng = new google.maps.LatLng(latitude, longitude);
+        geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+            // This is checking to see if the Geoeode Status is OK before proceeding
+            if (status == google.maps.GeocoderStatus.OK) {
+                address = (results[0].formatted_address);
+                console.log(results[0].formatted_address);
+            }
+            var newBuilding = {
+                "name": buildingName,
+                "latitude": latitude,
+                "longitude": longitude,
+                "address": address,
+                "floors": []
+            }
+            var floorPlan = JSON.parse(floorNumberJSON);
+            for (var i = 0; i < floorPlan.length; i++) {
+                newBuilding.floors.push({
+                    rooms: []
+                });
+                for (var j = 0; j < floorPlan[i]; j++) {
+                    newBuilding.floors[newBuilding.floors.length - 1]['rooms'].push({});
+                }
+            }
+            console.log(newBuilding);
+            $.ajax({
+                type: "POST",
+                url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings",
+                data: JSON.stringify(newBuilding),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(data){
+                    clearMarkers();
+                    addBuildings(data);
+                    $("#createBuildingModal .close").click();
+                    map.panTo({lat: parseFloat(newBuilding['latitude']), lng: parseFloat(newBuilding['longitude'])});
+                },
+                failure: function(errMsg) {
+                    alert(errMsg);
+                },
+                error: function(errMsg) {
+                    alert("Building Not Added: Building Exists, ensure building name and combination of longitude and latitude are unique");
+                }
             });
-            for (var j = 0; j < floorPlan[i]; j++) {
-                newBuilding.floors[newBuilding.floors.length - 1]['rooms'].push({});
-            }
-        }
-        console.log(newBuilding);
-        $.ajax({
-            type: "POST",
-            url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings",
-            data: JSON.stringify(newBuilding),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(data){
-                clearMarkers();
-                addBuildings(data);
-                $("#createBuildingModal .close").click();
-                map.panTo({lat: parseFloat(newBuilding['latitude']), lng: parseFloat(newBuilding['longitude'])});
-            },
-            failure: function(errMsg) {
-                alert(errMsg);
-            },
-            error: function(errMsg) {
-                alert("Building Not Added: Building Exists, ensure building name and combination of longitude and latitude are unique");
-            }
         });
     }
 }

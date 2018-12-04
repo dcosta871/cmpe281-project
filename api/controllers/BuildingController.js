@@ -2,7 +2,7 @@
 
 
 var mongoose = require('mongoose'),
-  Building = mongoose.model('BuildingSchema');
+  Building = mongoose.model('BuildingSchema', undefined, 'buildings1');
 
 exports.get_all_buildings = function(req, res) {
   Building.find({}, function(err, building) {
@@ -510,14 +510,14 @@ exports.update_sensor = function(req, res) {
 exports.authenticate = function(req, res) {
   var authentication_request = req.body;
   var MongoClient = require('mongodb').MongoClient;
-  var url = "mongodb+srv://admin:admin@cluster0-rsavg.mongodb.net";
+  var url = "mongodb+srv://fion:abcd@cluster0-fomga.mongodb.net";
 
   MongoClient.connect(url, function(err, db) {
     if (err) {
       res.status(500).send("ConnectionError");
       throw err;
     }
-    var dbo = db.db("users");
+    var dbo = db.db("test");
     dbo.collection("users").findOne({"user": authentication_request.user}, function(err, result) {
       if (err) throw err;
       if (!result || result["password"] !== authentication_request.password) {

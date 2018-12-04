@@ -11,6 +11,7 @@ var BuildingSchema = new Schema({
   floors: [{
     clusterName: String,
     status: String,
+    floorMap: String,
     rooms: [{
         nodeName: String,
         status: String,

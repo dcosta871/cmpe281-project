@@ -32,6 +32,7 @@
         }
         #floorPlanDiv {
           padding: 20px;
+          width: 35%;
           height: 40%;
           float: right;
           margin-right: 15%;
@@ -183,10 +184,11 @@
             Cluster Name: <input style="width: 60%" class="form-control" type="text" id="clusterName" name="clusterName"><br>
             Floor Number: <input style="width: 60%" class="form-control" type="text" id="clusterFloorNumber" name="clusterFloorNumber"><br>
             Status: <select style="width: 60%" class="form-control" type="text" id="clusterStatus" name="clusterStatus">
-                <option value="On">On</option>
-                <option value="Off">Off</option>
-                <option value="Restarting">Restarting</option>
-                <option value="Error">Error</option><br>
+              <option value="Inactive">Inactive</option>
+              <option value="Active">Active</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Turning On">Turning On</option>
+              <option value="Turning Off">Turning Off</option><br>
             </select>
           </div>
           <div class="modal-footer">
@@ -208,10 +210,11 @@
           <div class="modal-body">
             Cluster Name: <input style="width: 60%" class="form-control" type="text" id="editClusterName" name="clusterName"><br>
             Status: <select style="width: 60%" class="form-control" type="text" id="editClusterStatus" name="clusterFloorNumber">
-                <option value="On">On</option>
-                <option value="Off">Off</option>
-                <option value="Restarting">Restarting</option>
-                <option value="Error">Error</option><br>
+              <option value="Inactive">Inactive</option>
+              <option value="Active">Active</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Turning On">Turning On</option>
+              <option value="Turning Off">Turning Off</option><br>
             </select>
           </div>
           <div class="modal-footer">
@@ -234,10 +237,11 @@
             Node Name: <input style="width: 60%" class="form-control" type="text" id="nodeName" name="nodeName"><br>
             Room Number: <input style="width: 60%" class="form-control" type="text" id="nodeRoomNumber" name="nodeRoomNumber"><br>
             Status: <select style="width: 60%" class="form-control" type="text" id="nodeStatus" name="nodeStatus">
-                <option value="On">On</option>
-                <option value="Off">Off</option>
-                <option value="Restarting">Restarting</option>
-                <option value="Error">Error</option><br>
+              <option value="Inactive">Inactive</option>
+              <option value="Active">Active</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Turning On">Turning On</option>
+              <option value="Turning Off">Turning Off</option><br>
             </select>
           </div>
           <div class="modal-footer">
@@ -259,10 +263,11 @@
           <div class="modal-body">
             Node Name: <input style="width: 60%" class="form-control" type="text" id="editNodeName" name="editNodeName"><br>
             Status: <select style="width: 60%" class="form-control" type="text" id="editNodeStatus" name="editNodeStatus">
-              <option value="On">On</option>
-              <option value="Off">Off</option>
-              <option value="Restarting">Restarting</option>
-              <option value="Error">Error</option><br>
+              <option value="Inactive">Inactive</option>
+              <option value="Active">Active</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Turning On">Turning On</option>
+              <option value="Turning Off">Turning Off</option><br>
             </select>
           </div>
           <div class="modal-footer">
@@ -287,12 +292,14 @@
               <option value="Light">Light</option>
               <option value="Motion">Motion</option>
               <option value="HVAC">HVAC</option>
+              <option value="Temperature">Temperature</option>
             </select><br>
             Status: <select style="width: 60%" class="form-control" type="text" id="sensorStatus" name="sensorStatus">
-                <option value="On">On</option>
-                <option value="Off">Off</option>
-                <option value="Restarting">Restarting</option>
-                <option value="Error">Error</option><br>
+                <option value="Inactive">Inactive</option>
+                <option value="Active">Active</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Turning On">Turning On</option>
+                <option value="Turning Off">Turning Off</option><br>
             </select>
           </div>
           <div class="modal-footer">
@@ -314,15 +321,17 @@
           <div class="modal-body">
             Sensor Name: <input style="width: 60%" class="form-control" type="text" id="editSensorName" name="editSensorName"><br>
             Status: <select style="width: 60%" class="form-control" type="text" id="editSensorStatusSelect" name="editSensorStatusSelect">
-              <option value="On">On</option>
-              <option value="Off">Off</option>
-              <option value="Restarting">Restarting</option>
-              <option value="Error">Error</option><br>
+              <option value="Inactive">Inactive</option>
+              <option value="Active">Active</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Turning On">Turning On</option>
+              <option value="Turning Off">Turning Off</option><br>
             </select><br>
             Sensor Type: <select style="width: 60%" class="form-control" type="text" id="editSensorTypeSelect" name="editSensorTypeSelect">
                 <option value="Light">Light</option>
                 <option value="Motion">Motion</option>
                 <option value="HVAC">HVAC</option>
+                <option value="Temperature">Temperature</option>
               </select>
             </div>
             <div class="modal-footer">

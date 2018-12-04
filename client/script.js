@@ -7,7 +7,7 @@ var currentRoom = null;
 var currentSensor = null;
 var currentFloorPlanFloor = null;
 var markers = [];
-
+var baseurl = "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000";
 if (!String.prototype.endsWith) {
 	String.prototype.endsWith = function(search, this_len) {
 		if (this_len === undefined || this_len > this.length) {
@@ -26,7 +26,7 @@ function initMap() {
 }
 
 function updateBuildings(callback){
-    $.get('http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings', function(res, err){
+    $.get(baseurl + '/buildings', function(res, err){
         addBuildings(res);
         if (currentBuildingName) {
             for (var i = 0; i < buildings.length; i++) {
@@ -141,8 +141,11 @@ function processNewBuilding() {
             }
             var floorPlan = JSON.parse(floorNumberJSON);
             for (var i = 0; i < floorPlan.length; i++) {
+                var floorMapPic = "f2.png";
+                if (i % 2 == 0) floorMapPic = "f1.png";
                 newBuilding.floors.push({
-                    rooms: []
+                    rooms: [],
+                    floorMap: floorMapPic
                 });
                 for (var j = 0; j < floorPlan[i]; j++) {
                     newBuilding.floors[newBuilding.floors.length - 1]['rooms'].push({});
@@ -151,7 +154,7 @@ function processNewBuilding() {
             console.log(newBuilding);
             $.ajax({
                 type: "POST",
-                url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings",
+                url: baseurl + "/buildings",
                 data: JSON.stringify(newBuilding),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -194,16 +197,16 @@ function createFloorPlanTable() {
         if (i % 4 === 0) {
             tableString += "<tr>"
         }
-        if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'On') {
+        if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Active') {
             tableString += "<td class='nodeRoomFloorPlan' style='background-color: lightgreen' onclick='handleRoomClick(event)'>Room" + (i + 1) + "</td>";
         }
-        else if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Off') {
+        else if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Inactive') {
             tableString += "<td class='nodeRoomFloorPlan' style='background-color: lightgrey' onclick='handleRoomClick(event)'>Room" + (i + 1) + "</td>";
         }
-        else if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Restarting') {
+        else if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Turning On' || currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Turning Off')) {
             tableString += "<td class='nodeRoomFloorPlan' style='background-color: lightblue' onclick='handleRoomClick(event)'>Room" + (i + 1) + "</td>";
         }
-        else if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Error') {
+        else if (currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['nodeName'] && currentBuilding['floors'][currentFloorPlanFloor]['rooms'][i]['status'] === 'Maintenance') {
             tableString += "<td class='nodeRoomFloorPlan' style='background-color: red' onclick='handleRoomClick(event)'>Room" + (i + 1) + "</td>";
         }
         else {
@@ -323,7 +326,7 @@ function deleteCluster(event) {
     var clusterNumber = event.currentTarget.parentElement.parentElement.rowIndex  - 1;
     $.ajax({
         type: "DELETE",
-        url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + clusterNumber,
+        url: baseurl + '/buildings/' + currentBuildingName + "/floors/" + clusterNumber,
         success: function(data){
             updateBuildings([setFloorTable]);
         },
@@ -350,7 +353,7 @@ function updateExistingCluster() {
         }
         $.ajax({
             type: "PUT",
-            url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + floor,
+            url: baseurl + "/buildings/" + currentBuildingName + "/floors/" + floor,
             data: JSON.stringify(updatedCluster),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -389,7 +392,7 @@ function processNewCluster() {
         }
         $.ajax({
             type: "POST",
-            url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors",
+            url: baseurl + "/buildings/" + currentBuildingName + "/floors",
             data: JSON.stringify(newCluster),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -429,7 +432,7 @@ function processNewNode() {
         }
         $.ajax({
             type: "POST",
-            url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + clusterFloorNumber + "/rooms",
+            url: baseurl + "/buildings/" + currentBuildingName + "/floors/" + clusterFloorNumber + "/rooms",
             data: JSON.stringify(newNode),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -470,7 +473,7 @@ function updateExistingNode() {
         }
         $.ajax({
             type: "PUT",
-            url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom,
+            url: baseurl + "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom,
             data: JSON.stringify(updatedNode),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -504,7 +507,7 @@ function deleteNode(event) {
     var nodeNumber = event.currentTarget.parentElement.parentElement.rowIndex  - 1;
     $.ajax({
         type: "DELETE",
-        url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + nodeNumber,
+        url: baseurl + "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + nodeNumber,
         success: function(data){
             updateBuildings([setRoomTable, createFloorPlanTable]);
         },
@@ -538,7 +541,7 @@ function processNewSensor() {
         }
         $.ajax({
             type: "POST",
-            url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors",
+            url: baseurl + "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors",
             data: JSON.stringify(newSensor),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -581,7 +584,7 @@ function updateExistingSensor() {
         }
         $.ajax({
             type: "Put",
-            url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + currentSensor,
+            url: baseurl + "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + currentSensor,
             data: JSON.stringify(updateSensor),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -603,7 +606,7 @@ function deleteSensor() {
     var sensorNumber = event.currentTarget.parentElement.parentElement.rowIndex  - 1;
     $.ajax({
         type: "DELETE",
-        url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + sensorNumber,
+        url: baseurl + "/buildings/" + currentBuildingName + "/floors/" + currentFloor + "/rooms/" + currentRoom + "/sensors/" + sensorNumber,
         success: function(data){
             updateBuildings([setSensorTable]);
         },
@@ -639,7 +642,7 @@ function login() {
         type: "POST",
         data: JSON.stringify(authInfo),
         contentType: "application/json; charset=utf-8",
-        url: "http://nodeloadbalancer-1594461647.us-west-2.elb.amazonaws.com:3000/login",
+        url: baseurl + "/login",
         success: function(data){
             $('#loginModal').modal('toggle');
         },
